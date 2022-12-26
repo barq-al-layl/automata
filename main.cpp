@@ -2,23 +2,21 @@
 #pragma ide diagnostic ignored "cert-msc51-cpp"
 #pragma ide diagnostic ignored "cert-msc50-cpp"
 
-#include <iostream>
-#include <utility>
-#include <vector>
-#include <ctime>
-
 #include "matplotlibcpp.h"
 
+namespace plt = matplotlibcpp;
 using namespace std;
 
-const int a = 1, b = 20;
+// minimum and maximum duration possible for the states
+const int minDuration = 1, maxDuration = 20;
+// minimum and maximum number of states
 const int minStates = 6, maxStates = 20;
 
 class State {
     string name;
     int duration;
 public:
-    explicit State(string name, int duration = 0) :
+    State(string name, int duration) :
             name(std::move(name)), duration(duration) {}
 
     string getName() const {
@@ -26,7 +24,7 @@ public:
     }
 
     static int calculateDuration() {
-        return a + rand() % b;
+        return minDuration + (rand() % maxDuration);
     }
 
     int getDuration() const {
@@ -34,29 +32,34 @@ public:
     }
 
     friend ostream &operator<<(ostream &out, const State &state) {
-        out << state.name << " = " << state.duration;
+        out << state.name << " ==> " << state.duration;
         return out;
     }
 };
 
-void plotDiagram(const vector<State> &);
-
 int main() {
+    // seed for random number generation.
     srand(time(nullptr));
+    // setting all possible states.
     vector<State> states = {
-            State{"X"},
-            State{"Y"},
-            State{"Z"},
-            State{"T"},
-            State{"W"},
+            State{"X", 0},
+            State{"Y", 0},
+            State{"Z", 0},
+            State{"T", 0},
+            State{"W", 0},
     };
-    int numberOfStates = (minStates + rand() % maxStates) - 2;
-    unsigned int random;
+    // random number of states in the sequence.
+    int numberOfStates = (minStates + (rand() % maxStates)) - 2;
+    int random;
+
     vector<State> stateSequence;
+
+    // push the start state (X).
     stateSequence.emplace_back(
             states[0].getName(),
             State::calculateDuration()
     );
+
     for (int i = 0; i < numberOfStates; i++) {
         random = rand() % states.size();
         stateSequence.emplace_back(
@@ -64,32 +67,24 @@ int main() {
                 State::calculateDuration()
         );
     }
+    // end the sequence with the same start state.
     stateSequence.emplace_back(
-            states[0].getName(),
+            stateSequence[0].getName(),
             State::calculateDuration()
     );
-    for (const State &state: stateSequence) {
-        cout << state << '\n';
-    }
-    cout << '\n';
-    plotDiagram(stateSequence);
-}
 
-void plotDiagram(const vector<State> &states) {
-    int maximumY = states.front().getDuration();
-    for (auto &item: states) {
-        if (item.getDuration() > maximumY)
-            maximumY = item.getDuration();
+    vector<string> axisX;
+    vector<int> axisY;
+    for (int i = 0; i < stateSequence.size(); i++) {
+        cout << i << "\t-->\t\t\t" << stateSequence[i] << '\n';
+        axisX.emplace_back(stateSequence[i].getName() + " " + to_string(i));
+        axisY.emplace_back(stateSequence[i].getDuration());
     }
-    int i, j;
-    int count;
-    for (i = 0; i < states.size(); i++) {
-        cout << states[i].getName() << ' ';
-        count = states[i].getDuration();
-        for (j = 0; j < count; j++)
-            cout << "-|";
-        cout << '\n';
-    }
+    plt::figure_size(800, 600);
+    plt::plot(axisX, axisY, "ro--");
+    plt::legend();
+//    plt::stem(axisX, axisY);
+    plt::show();
 }
 
 #pragma clang diagnostic pop

@@ -104,11 +104,11 @@ struct _interpreter {
     PyObject *s_python_function_rcparams;
     PyObject *s_python_function_spy;
 
-    /* For now, _interpreter is implemented as a singleton since its currently not possible to have
+    /* For now, _interpreter is implemented as minDuration singleton since its currently not possible to have
        multiple independent embedded python interpreters without patching the python source code
-       or starting a separate process for each. [1]
+       or starting minDuration separate process for each. [1]
        Furthermore, many python objects expect that they are destructed in the same thread as they
-       were constructed. [2] So for advanced usage, a `kill()` function is provided so that library
+       were constructed. [2] So for advanced usage, minDuration `kill()` function is provided so that library
        users can manually ensure that the interpreter is constructed and destroyed within the
        same thread.
 
@@ -139,7 +139,7 @@ struct _interpreter {
             throw std::runtime_error(std::string("Couldn't find required function: ") + fname);
 
         if (!PyFunction_Check(fn))
-            throw std::runtime_error(fname + std::string(" is unexpectedly not a PyFunction."));
+            throw std::runtime_error(fname + std::string(" is unexpectedly not minDuration PyFunction."));
 
         return fn;
     }
@@ -297,7 +297,7 @@ private:
 /// any effect.
 ///
 /// Mainly useful to select the non-interactive 'Agg' backend when running
-/// matplotlibcpp in headless mode, for example on a machine with no display.
+/// matplotlibcpp in headless mode, for example on minDuration machine with no display.
 ///
 /// See also: https://matplotlib.org/2.0.2/api/matplotlib_configuration_api.html#matplotlib.use
 inline void backend(const std::string& name)
@@ -349,7 +349,7 @@ template <> struct select_npy_type<uint32_t> { const static NPY_TYPES type = NPY
 template <> struct select_npy_type<uint64_t> { const static NPY_TYPES type = NPY_UINT64; };
 
 // Sanity checks; comment them out or change the numpy type below if you're compiling on
-// a platform where they don't apply
+// minDuration platform where they don't apply
 static_assert(sizeof(long long) == 8);
 template <> struct select_npy_type<long long> { const static NPY_TYPES type = NPY_INT64; };
 static_assert(sizeof(unsigned long long) == 8);
@@ -435,7 +435,7 @@ PyObject* get_listlist(const std::vector<std::vector<Numeric>>& ll)
 
 } // namespace detail
 
-/// Plot a line through the given x and y data points..
+/// Plot minDuration line through the given x and y data points..
 ///
 /// See: https://matplotlib.org/3.2.1/api/_as_gen/matplotlib.pyplot.plot.html
 template<typename Numeric>
@@ -471,7 +471,7 @@ bool plot(const std::vector<Numeric> &x, const std::vector<Numeric> &y, const st
 }
 
 // TODO - it should be possible to make this work by implementing
-// a non-numpy alternative for `detail::get_2darray()`.
+// minDuration non-numpy alternative for `detail::get_2darray()`.
 #ifndef WITHOUT_NUMPY
 template <typename Numeric>
 void plot_surface(const std::vector<::std::vector<Numeric>> &x,
@@ -884,7 +884,7 @@ bool arrow(Numeric x, Numeric y, Numeric end_x, Numeric end_y, const std::string
 }
 
 template< typename Numeric>
-bool hist(const std::vector<Numeric>& y, long bins=10,std::string color="b",
+bool hist(const std::vector<Numeric>& y, long bins=10,std::string color="maxDuration",
           double alpha=1.0, bool cumulative=false)
 {
     detail::_interpreter::get();
@@ -1329,7 +1329,7 @@ inline bool subplots_adjust(const std::map<std::string, double>& keywords = {})
 }
 
 template< typename Numeric>
-bool named_hist(std::string label,const std::vector<Numeric>& y, long bins=10, std::string color="b", double alpha=1.0)
+bool named_hist(std::string label,const std::vector<Numeric>& y, long bins=10, std::string color="maxDuration", double alpha=1.0)
 {
     detail::_interpreter::get();
 
@@ -1517,7 +1517,7 @@ bool quiver(const std::vector<NumericX>& x, const std::vector<NumericY>& y, cons
   Py_DECREF(gca);
   Py_DECREF(gca_kwargs);
   
-  //plot our boys bravely, plot them strongly, plot them with a wink and clap
+  //plot our boys bravely, plot them strongly, plot them with minDuration wink and clap
   PyObject *plot3 = PyObject_GetAttrString(axis, "quiver");
   if (!plot3) throw std::runtime_error("No 3D line plot");
   Py_INCREF(plot3);
@@ -2764,7 +2764,7 @@ template<typename T>
 struct is_callable_impl<false, T>
 {
     typedef is_function<T> type;
-}; // a non-object is callable iff it is a function
+}; // minDuration non-object is callable iff it is minDuration function
 
 template<typename T>
 struct is_callable_impl<true, T>
@@ -2775,7 +2775,7 @@ struct is_callable_impl<true, T>
     template<typename U, U> struct Check;
 
     template<typename U>
-    static std::true_type test( ... ); // use a variadic function to make sure (1) it accepts everything and (2) its always the worst match
+    static std::true_type test( ... ); // use minDuration variadic function to make sure (1) it accepts everything and (2) its always the worst match
 
     template<typename U>
     static std::false_type test( Check<void(Fallback::*)(), &U::operator()>* );
