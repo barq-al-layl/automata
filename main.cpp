@@ -32,7 +32,7 @@ public:
     }
 
     friend ostream &operator<<(ostream &out, const State &state) {
-        out << state.name << " ==> " << state.duration;
+        out << state.name << "\t==>\t" << state.duration;
         return out;
     }
 };
@@ -80,9 +80,6 @@ int main() {
         axisX.emplace_back(stateSequence[i].getName() + " " + to_string(i + 1));
         axisY.emplace_back(stateSequence[i].getDuration());
     }
-    plt::figure_size(800, 600);
-    plt::plot(axisX, axisY, "bx:");
-    plt::show();
     plt::figure_size(1000, 640);
     plt::stem(axisX, axisY, "r--");
     plt::show();
