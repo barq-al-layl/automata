@@ -54,12 +54,12 @@ int main() {
 
     vector<State> stateSequence;
 
-    // push the start state (X).
+    // push the start state X.
     stateSequence.emplace_back(
             states[0].getName(),
             State::calculateDuration()
     );
-
+    // push a random state to the state sequence with random duration.
     for (int i = 0; i < numberOfStates; i++) {
         random = rand() % states.size();
         stateSequence.emplace_back(
@@ -80,6 +80,7 @@ int main() {
         axisX.emplace_back(stateSequence[i].getName() + " " + to_string(i + 1));
         axisY.emplace_back(stateSequence[i].getDuration());
     }
+    // sets the size of the figure and plots it.
     plt::figure_size(1000, 640);
     plt::stem(axisX, axisY, "r--");
     plt::show();
