@@ -50,7 +50,7 @@ int main() {
     };
     // random number of states in the sequence.
     int numberOfStates = (minStates + (rand() % maxStates)) - 2;
-    int random;
+    unsigned int random;
 
     vector<State> stateSequence;
 
