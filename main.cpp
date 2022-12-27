@@ -77,13 +77,14 @@ int main() {
     vector<int> axisY;
     for (int i = 0; i < stateSequence.size(); i++) {
         cout << i << "\t-->\t\t\t" << stateSequence[i] << '\n';
-        axisX.emplace_back(stateSequence[i].getName() + " " + to_string(i));
+        axisX.emplace_back(stateSequence[i].getName() + " " + to_string(i + 1));
         axisY.emplace_back(stateSequence[i].getDuration());
     }
     plt::figure_size(800, 600);
-    plt::plot(axisX, axisY, "ro--");
-    plt::legend();
-//    plt::stem(axisX, axisY);
+    plt::plot(axisX, axisY, "bx:");
+    plt::show();
+    plt::figure_size(1000, 640);
+    plt::stem(axisX, axisY, "r--");
     plt::show();
 }
 
