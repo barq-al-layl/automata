@@ -90,9 +90,9 @@ int main() {
         axisX.emplace_back(stateSequence[i].getName() + " " + to_string(i + 1));
         axisY.emplace_back(stateSequence[i].getDuration());
     }
-    // sets the size of the figure and plots it.
+    // sets the size of the figure to 1000 x 640.
     plt::figure_size(1000, 640);
-    // "ro--" => r: red color, o -> o markers, --: dashed line.
+    // "ro--" stands for => r: red color, o -> o like markers, --: dashed line.
     plt::plot(axisX, axisY, "ro--");
     plt::show();
 }
